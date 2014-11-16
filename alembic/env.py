@@ -15,8 +15,8 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from app import db
-target_metadata = db.metadata
+from app.db import Base
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -52,6 +52,7 @@ def run_migrations_online():
     """
     alembic_config = config.get_section(config.config_ini_section)
     from app import app
+    from app.models import User
 
     alembic_config['sqlalchemy.url'] = app.config['SQLALCHEMY_DATABASE_URI']
 

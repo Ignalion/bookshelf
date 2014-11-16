@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 login_manager = LoginManager()
@@ -8,7 +8,7 @@ app = Flask(__name__)
 from config.base import BaseConfig
 app.config.from_object(BaseConfig)
 
-db = SQLAlchemy(app)
+#db = SQLAlchemy(app)
 login_manager.init_app(app)
 
 GLOBAL_ENDPOINTS = []
