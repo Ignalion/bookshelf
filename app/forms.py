@@ -8,7 +8,7 @@ from wtforms import (
     SubmitField,
     ValidationError,
 )
-from wtforms.validators import Required, Length, EqualTo, Email, Optional
+from wtforms.validators import Required, Length, EqualTo, Email
 from wtforms.widgets import PasswordInput
 
 from app.lib.abstract import UserAbstraction
@@ -66,7 +66,8 @@ class RegisterForm(Form):
 
     email = TextField(
         'e-mail',
-        validators=[Optional(), Email('Incorrect e-mail')])
+        validators=[Required('E-mail field is required.'),
+                    Email('Incorrect e-mail')])
 
     password = PasswordField(
         'password',
