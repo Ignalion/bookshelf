@@ -42,6 +42,7 @@ class Book(Base):
     __tablename__ = 'books'
     id = Column(Integer, primary_key=True)
     title = Column(String(64))
+    user_id = Column(Integer, ForeignKey('users.id'))
     authors = relationship('Author',
                            secondary=books_authors,
                            backref='books')
@@ -57,6 +58,7 @@ class Author(Base):
     __tablename__ = 'authors'
     id = Column(Integer, primary_key=True)
     name = Column(String(64))
+    user_id = Column(Integer, ForeignKey('users.id'))
 
     def __init__(self, name=None):
         self.name = name
