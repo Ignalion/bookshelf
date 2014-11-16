@@ -1,7 +1,13 @@
 from flask import render_template
 from flask.views import View
-from app import models
+from flask_login import current_user
+
 
 class IndexView(View):
+
+    methods = ('GET',)
+
     def dispatch_request(self, t="index.html"):
-        return render_template(t)
+        user = current_user
+        return render_template(t,
+                               user=user)
