@@ -1,0 +1,14 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }} - Bookshelf application</title>
+        {% else %}
+        <title>Unnamed page</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>Main page: <a href="/">Home</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
