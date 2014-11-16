@@ -100,3 +100,33 @@ class UserAbstraction(BaseDBAbstraction):
             pass
 
         return user
+
+
+class BookAbstraction(BaseDBAbstraction):
+    """ Abstraction for Book model """
+
+    model = models.Book
+
+    def create(self, *args, **kwargs):
+        return self.safe_execute(self._create, *args, **kwargs)
+
+    def _create(self, *args, **kwargs):
+        new_book = self.model()
+        new_book.title = kwargs.get('title', '')
+        self.session.add(new_book)
+        return new_book
+
+
+class AuthorAbstraction(BaseDBAbstraction):
+    """ Abstraction for Author model """
+
+    model = models.Author
+
+    def create(self, *args, **kwargs):
+        return self.safe_execute(self._create, *args, **kwargs)
+
+    def _create(self, *args, **kwargs):
+        new_author = self.model()
+        new_author.name = kwargs.get('name', '')
+        self.session.add(new_author)
+        return new_author
