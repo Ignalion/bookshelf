@@ -100,3 +100,25 @@ class RegisterForm(Form):
             if not user_mgr.get_by_email(field.data) is None:
                 raise ValidationError('Such e-mail already exists.')
             return True
+
+
+class AddBookForm(Form):
+    new_book = TextField(
+        'title',
+        validators=[Required('Book title field is required.'),
+                    Length(max=50, message='Book title length name must be less'
+                           'than 50')]
+    )
+
+    submit = SubmitField('Add book')
+
+
+class AddAuthorForm(Form):
+    new_author = TextField(
+        'name',
+        validators=[Required('Author name field is required.'),
+                    Length(max=50, message='Author name length must be less'
+                           'than 50')]
+    )
+
+    submit = SubmitField('Add author')
