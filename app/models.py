@@ -43,7 +43,8 @@ class Book(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(64))
     authors = relationship('Author',
-                           secondary=books_authors)
+                           secondary=books_authors,
+                           backref='books')
 
     def __init__(self, title=None):
         self.title = title
