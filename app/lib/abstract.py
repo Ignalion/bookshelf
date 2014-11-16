@@ -112,9 +112,24 @@ class BookAbstraction(BaseDBAbstraction):
 
     def _create(self, *args, **kwargs):
         new_book = self.model()
+        new_book.user = kwargs.get('user', '')
         new_book.title = kwargs.get('title', '')
         self.session.add(new_book)
         return new_book
+
+    def get_book_list(self, user_obj):
+        q = user_obj.books
+        books = None
+        try:
+            books = q.all()
+        except NoResultFound:
+            pass
+
+        return books
+
+    def add_book(self, user_obj, title):
+        """ Add new book """
+        self.create(user=user_obj, title=title)
 
 
 class AuthorAbstraction(BaseDBAbstraction):
@@ -127,6 +142,21 @@ class AuthorAbstraction(BaseDBAbstraction):
 
     def _create(self, *args, **kwargs):
         new_author = self.model()
+        new_author.user = kwargs.get('user', '')
         new_author.name = kwargs.get('name', '')
         self.session.add(new_author)
         return new_author
+
+    def get_authors_list(self, user_obj):
+        q = user_obj.authors
+        authors = None
+        try:
+            authors = q.all()
+        except NoResultFound:
+            pass
+
+        return authors
+
+    def add_author(self, user_obj, name):
+        """ Add new author """
+        self.create(user=user_obj, name=name)
