@@ -1,3 +1,5 @@
+import string
+
 from flask_wtf import Form
 from wtforms import (
     TextField,
@@ -37,17 +39,14 @@ class LoginForm(Form):
     def validate_user_ident(form, *args, **kwargs):
         """ Validate user by provided username or email and password """
 
-        if form.data:
-            form.try_validate = True
         user_mgr = UserAbstraction()
-        cleared_user_ident = form.user_ident.data
-        # TODO Fix invalid input
+        user_ident = form.user_ident.data
 
         user_obj = None
-        if "@" in cleared_user_ident:
-            user_obj = user_mgr.get_by_email(cleared_user_ident)
+        if "@" in user_ident:
+            user_obj = user_mgr.get_by_email(user_ident)
         else:
-            user_obj = user_mgr.get_by_username(cleared_user_ident)
+            user_obj = user_mgr.get_by_username(user_ident)
 
         if user_obj and (user_mgr.check_password(user_obj, form.password.data)):
             form.user_obj = user_obj
@@ -85,6 +84,10 @@ class RegisterForm(Form):
 
     def validate_username(form, field):
         if field.data:
+            allowed_set = set(string.ascii_letters + string.digits + '_-')
+            if set(field.data) - allowed_set:
+                raise ValidationError('Username can contain only letters,'
+                                      'digits, underscore and hyphen')
             user_mgr = UserAbstraction()
             if not user_mgr.get_by_username(field.data) is None:
                 raise ValidationError('Such username already exists.')
