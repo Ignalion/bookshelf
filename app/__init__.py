@@ -9,6 +9,8 @@ from config.base import BaseConfig
 app.config.from_object(BaseConfig)
 
 #db = SQLAlchemy(app)
+#from app import db
+#db.init_db()
 login_manager.init_app(app)
 
 GLOBAL_ENDPOINTS = []
