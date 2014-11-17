@@ -48,7 +48,7 @@ class AddBook(views.View):
         if request.method == 'POST':
             book_mgr.add_book(current_user, form.new_book.data)
 
-            return redirect(url_for('index'))  # FIXME
+            return redirect(url_for('booklist'))
 
         return render_template(t,
                                form=form,
@@ -66,7 +66,7 @@ class AddAuthor(views.View):
         if request.method == 'POST':
             author_mgr.add_author(current_user, form.new_author.data)
 
-            return redirect(url_for('index'))  # FIXME
+            return redirect(url_for('authorlist'))
 
         return render_template(t,
                                form=form,
