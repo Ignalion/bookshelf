@@ -1,3 +1,6 @@
+"""
+This module provides everything about login in the booksgelf app
+"""
 from flask import redirect, render_template, request, views, url_for
 from flask_login import login_user, current_user, login_required, logout_user
 

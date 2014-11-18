@@ -1,9 +1,23 @@
+"""
+This module represents all models in bookshelf applications.
+There are as follows:
+    User
+    Book
+    Author
+
+Book and Author has Many-To-Many relationship with backref
+User and Book has One-To-Many relationship with backref
+User and Author has One-To-Mane relationship with backref
+"""
+
 from sqlalchemy import Column, Integer, String, Table, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from app.db import Base
 
 
 class User(Base):
+    """ Represents `user` table in db """
+
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     username = Column(String(64), index=True, unique=True)
@@ -39,6 +53,8 @@ books_authors = Table(
 
 
 class Book(Base):
+    """ Represents `book` table in db """
+
     __tablename__ = 'books'
     id = Column(Integer, primary_key=True)
     title = Column(String(64))
@@ -56,6 +72,8 @@ class Book(Base):
 
 
 class Author(Base):
+    """ Represents `author` table in db """
+
     __tablename__ = 'authors'
     id = Column(Integer, primary_key=True)
     name = Column(String(64))

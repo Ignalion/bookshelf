@@ -1,3 +1,6 @@
+"""
+Registering user into our system. Now we'll be watching you.
+"""
 from flask import (
     render_template,
     request,
@@ -11,7 +14,6 @@ from flask_login import current_user
 
 from app.forms import RegisterForm
 from app.lib.abstract import UserAbstraction
-# from app.models import User
 
 
 class RegisterView(views.View):
