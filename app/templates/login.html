@@ -6,8 +6,8 @@
 	<form class="form" method="POST" role="form">
 		{{ form.csrf_token }}
 		{{ wtf.form_errors(form, hiddens="only") }}
-		{{ wtf.form_field(form.user_ident) }}
-		{{ wtf.form_field(form.password) }}
+		{{ wtf.form_field(form.user_ident, placeholder="E-mail/username") }}
+		{{ wtf.form_field(form.password, placeholder="Password") }}
 		{{ wtf.form_field(form.remember) }}
 		{{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
 	</form>
