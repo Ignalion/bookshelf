@@ -9,15 +9,20 @@
     <body>
         <div>Main page:
             <a href="{{ url_for('index') }}">Home</a>
+            | <a href="{{ url_for('search') }}">Search</a>
             {% if user.is_authenticated() %}
             | <a href="{{ url_for('booklist') }}">BookList</a>
             | <a href="{{ url_for('authorlist') }}">AuthorList</a>
             || <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+            | <a href="{{ url_for('login') }}">Login</a>
+            | <a href="{{ url_for('register') }}">Register</a>
             {% endif %}
         </div>
         <hr>
         {% block content %}{% endblock %}
         <footer>
+            <hr />
             <p>Licensed by GNU GPL 2.0. Author: Constantine Panfilov</p>
         </footer>
     </body>

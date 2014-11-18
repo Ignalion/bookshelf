@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <h4>Search for book by title or author name</h4>
+
+    <form method="POST" action="">
+        <div>
+            {{form.csrf_token}}
+            <p>{{form.search}}</p>
+            {{form.submit}}
+        <div>
+    </form>
+    {% for book in result %}
+        <p>
+            {{book.title}}
+            {% for author in book.authors %}
+                | {{author.name}}
+            {% endfor %}
+        </p>
+    {% endfor %}
+
+{% endblock %}

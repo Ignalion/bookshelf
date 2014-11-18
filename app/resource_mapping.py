@@ -15,6 +15,7 @@ ENDPOINTS = (
     ('/addauthor', endpoints.booksauthors.AddAuthor.as_view('addauthor')),
     ('/editauthor/<int:author_id>',
         endpoints.booksauthors.AddAuthor.as_view('editauthor')),
+    ('/search/', endpoints.search.SearchView.as_view('search')),
 
 )
 

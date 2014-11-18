@@ -151,3 +151,8 @@ class AuthorForm(Form):
 
 class AuthorListForm(Form):
     authors = FieldList(FormField(AuthorForm))
+
+
+class SearchForm(Form):
+    search = TextField('Title / Author')
+    submit = SubmitField('Search')
