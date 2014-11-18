@@ -30,6 +30,8 @@ class RegisterView(views.View):
         if request.method == 'POST':
             if form.validate_on_submit():
                 user_mgr = UserAbstraction()
+                password = user_mgr.set_password(form.password.data)
+                form.password.data = password
                 user_mgr.create(**form.data)
                 return redirect(url_for('index'))
 

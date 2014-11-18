@@ -10,10 +10,11 @@
     {% endfor %}
 {% endif %}
 
-<form method="POST" action="{{url_for('addbook')}}">
+<form method="POST" action="">
     <div>
         {{form.csrf_token}}
         {{form.new_book (placeholder="Book title")}}
+        {{form.authors}}
         {{form.submit}}
     </div>
 </form>

@@ -9,8 +9,13 @@ ENDPOINTS = (
 
     ('/booklist', endpoints.booksauthors.BookList.as_view('booklist')),
     ('/authorlist', endpoints.booksauthors.AuthorList.as_view('authorlist')),
-    ('/addbook', endpoints.booksauthors.AddBook.as_view('addbook')),
+    ('/addbook/', endpoints.booksauthors.AddBook.as_view('addbook')),
+    ('/editbook/<int:book_id>',
+        endpoints.booksauthors.AddBook.as_view('editbook')),
     ('/addauthor', endpoints.booksauthors.AddAuthor.as_view('addauthor')),
+    ('/editauthor/<int:author_id>',
+        endpoints.booksauthors.AddAuthor.as_view('editauthor')),
+
 )
 
 
