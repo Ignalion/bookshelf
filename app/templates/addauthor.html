@@ -10,7 +10,7 @@
     {% endfor %}
 {% endif %}
 
-<form method="POST" action="{{url_for('addauthor')}}">
+<form method="POST" action="">
     <div>
         {{form.csrf_token}}
         {{form.new_author (placeholder="Author name")}}

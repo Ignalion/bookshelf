@@ -155,10 +155,14 @@ class AuthorAbstraction(BaseDBAbstraction):
 
     def add_edit_author(self, user_obj, author):
         """ Add new author or edit existing one """
-        book_mgr = BookAbstraction()
-        author['books'] = book_mgr.get_book_list(user_obj).filter(
-            book_mgr.model.id.in_([int(id) for id in author['books']])).all()
-        self.create(user=user_obj, **author)
+        # book_mgr = BookAbstraction()
+        # author['books'] = book_mgr.get_book_list(user_obj).filter(
+        #     book_mgr.model.id.in_([int(id) for id in author['books']])).all()
+        if author['id'] is not None:
+            author_obj = self.model().query.get(author['id'])
+            self.update(entry_obj=author_obj, **author)
+        else:
+            self.create(user=user_obj, **author)
 
     def author_search(self, name):
         authors = self.session.query(self.model).filter(

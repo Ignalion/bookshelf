@@ -1,3 +1,16 @@
+"""
+Module contains all forms for bookshelf application:
+    LoginForm
+    RegisterForm
+    AddEditBookForm
+    AddEditAuthorForm
+    BookForm
+    BookListForm
+    AuthorForm
+    AuthorListForm
+    SearchForm
+"""
+
 import string
 
 from flask_wtf import Form
@@ -23,7 +36,12 @@ LENGTH_FIELD = '%s length must be less than %d'
 
 
 class LoginForm(Form):
-    """ Login form """
+    """
+    Login form. Contains the following fields:
+        - user_ident: TextField
+        - password: PasswordField
+        - remember: BooleanField
+    """
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
@@ -64,6 +82,15 @@ class LoginForm(Form):
 
 
 class RegisterForm(Form):
+    """
+    Register user form. Contains the following fields:
+        - username: TextField
+        - email: TextField
+        - password: PasswordField
+        - confirmpass: PasswordField
+        - submit: SubmitField
+    """
+
     username = TextField(
         'Username',
         validators=[Required(REQUIRED_FIELD % 'Username'),
@@ -109,7 +136,14 @@ class RegisterForm(Form):
             return True
 
 
-class AddBookForm(Form):
+class AddEditBookForm(Form):
+    """
+    Form for adding a book. Contains the following fields:
+        - new_book: TextField
+        - authors: SelectMultipleField
+        - submit: SubmitField
+    """
+
     new_book = TextField(
         'Title',
         validators=[Required(REQUIRED_FIELD % 'Title'),
@@ -119,17 +153,30 @@ class AddBookForm(Form):
     submit = SubmitField('Add book')
 
 
-class AddAuthorForm(Form):
+class AddEditAuthorForm(Form):
+    """
+    Form for adding a book. Contains the following fields:
+        - new_author: TextField
+        - submit: SubmitField
+    """
+
     new_author = TextField(
         'Name',
         validators=[Required(REQUIRED_FIELD % 'Name'),
                     Length(max=50, message=LENGTH_FIELD % ('Name', 50))]
     )
-    books = SelectMultipleField('books')
     submit = SubmitField('Add author')
 
 
 class BookForm(Form):
+    """
+    Form represents a single book. Contains the following fields:
+        - book_id: HiddenField
+        - title: TextField
+        - authors: FieldList(TextField))
+        - edit: SubmitField
+        - delete: SubmitField
+    """
     book_id = HiddenField('book_id')
     title = TextField('title')
     authors = FieldList(TextField('name'))
@@ -138,21 +185,42 @@ class BookForm(Form):
 
 
 class BookListForm(Form):
+    """
+    Form contains list of BookForm instances. Contains the following field:
+        - books: FieldList(FormField)
+    """
     books = FieldList(FormField(BookForm))
 
 
 class AuthorForm(Form):
+    """
+    Form represents a single book. Contains the following fields:
+        - author_id: HiddenField
+        - name: TextField
+        - books: FieldList(TextField))
+        - edit: SubmitField
+        - delete: SubmitField
+    """
+
     author_id = HiddenField('author_id')
     name = TextField('name')
-    books = FieldList(TextField('title'))
     edit = SubmitField('edit')
     delete = SubmitField('delete')
 
 
 class AuthorListForm(Form):
+    """
+    Form contains list of AuthorForm instances. Contains the following field:
+        - authors: FieldList(FormField)
+    """
     authors = FieldList(FormField(AuthorForm))
 
 
 class SearchForm(Form):
+    """
+    Form for searching books via title/author. Contains the following fields:
+        - search: TextField
+        - submit: SubmitField
+    """
     search = TextField('Title / Author')
     submit = SubmitField('Search')
