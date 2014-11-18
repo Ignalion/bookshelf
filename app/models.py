@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Table, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from app.db import Base
 
 
@@ -42,8 +42,11 @@ class Book(Base):
     __tablename__ = 'books'
     id = Column(Integer, primary_key=True)
     title = Column(String(64))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship('User', backref=backref('books', lazy='dynamic'))
     authors = relationship('Author',
-                           secondary=books_authors)
+                           secondary=books_authors,
+                           backref='books')
 
     def __init__(self, title=None):
         self.title = title
@@ -56,6 +59,8 @@ class Author(Base):
     __tablename__ = 'authors'
     id = Column(Integer, primary_key=True)
     name = Column(String(64))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship('User', backref=backref('authors', lazy='dynamic'))
 
     def __init__(self, name=None):
         self.name = name

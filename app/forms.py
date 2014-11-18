@@ -5,7 +5,11 @@ from wtforms import (
     TextField,
     PasswordField,
     BooleanField,
+    FieldList,
+    HiddenField,
+    FormField,
     SubmitField,
+    SelectMultipleField,
     ValidationError,
 )
 from wtforms.validators import Required, Length, EqualTo, Email
@@ -14,8 +18,12 @@ from wtforms.widgets import PasswordInput
 from app.lib.abstract import UserAbstraction
 
 
+REQUIRED_FIELD = '%s field is required'
+LENGTH_FIELD = '%s length must be less than %d'
+
+
 class LoginForm(Form):
-    """ Login form with custom validate method """
+    """ Login form """
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
@@ -23,14 +31,13 @@ class LoginForm(Form):
         self.try_validate = False
 
     user_ident = TextField(
-        'username', validators=[
-            Required('E-mail/username field is required.'),
-            Length(max=48, message='E-mail/username length must be '
-                   'less than 48 chars.')]
+        'userident', validators=[
+            Required(REQUIRED_FIELD % 'E-mail/username'),
+            Length(max=48, message=LENGTH_FIELD % ('E-mail/username', 48))]
     )
     password = PasswordField(
         'Password', validators=[
-            Required('Password field is required.')],
+            Required(REQUIRED_FIELD % 'Password')],
         widget=PasswordInput()
     )
     remember = BooleanField('Remember me')
@@ -58,20 +65,20 @@ class LoginForm(Form):
 
 class RegisterForm(Form):
     username = TextField(
-        'username',
-        validators=[Required('Username field is required.'),
-                    Length(min=2, max=20, message='Username length'
-                           'must be less than 20')]
+        'Username',
+        validators=[Required(REQUIRED_FIELD % 'Username'),
+                    Length(min=2, max=20, message=LENGTH_FIELD %
+                           ('Username', 20))]
     )
 
     email = TextField(
-        'e-mail',
-        validators=[Required('E-mail field is required.'),
+        'E-mail',
+        validators=[Required(REQUIRED_FIELD % 'E-mail'),
                     Email('Incorrect e-mail')])
 
     password = PasswordField(
-        'password',
-        validators=[Required('Password field is required'),
+        'Password',
+        validators=[Required(REQUIRED_FIELD % 'Password'),
                     EqualTo('confirmpass', message='Passwords must match')]
     )
 
@@ -100,3 +107,47 @@ class RegisterForm(Form):
             if not user_mgr.get_by_email(field.data) is None:
                 raise ValidationError('Such e-mail already exists.')
             return True
+
+
+class AddBookForm(Form):
+    new_book = TextField(
+        'Title',
+        validators=[Required(REQUIRED_FIELD % 'Title'),
+                    Length(max=50, message=LENGTH_FIELD % ('Title', 50))]
+    )
+    authors = SelectMultipleField('authors')
+    submit = SubmitField('Add book')
+
+
+class AddAuthorForm(Form):
+    new_author = TextField(
+        'Name',
+        validators=[Required(REQUIRED_FIELD % 'Name'),
+                    Length(max=50, message=LENGTH_FIELD % ('Name', 50))]
+    )
+    books = SelectMultipleField('books')
+    submit = SubmitField('Add author')
+
+
+class BookForm(Form):
+    book_id = HiddenField('book_id')
+    title = TextField('title')
+    authors = FieldList(TextField('name'))
+    edit = SubmitField('edit')
+    delete = SubmitField('delete')
+
+
+class BookListForm(Form):
+    books = FieldList(FormField(BookForm))
+
+
+class AuthorForm(Form):
+    author_id = HiddenField('author_id')
+    name = TextField('name')
+    books = FieldList(TextField('title'))
+    edit = SubmitField('edit')
+    delete = SubmitField('delete')
+
+
+class AuthorListForm(Form):
+    authors = FieldList(FormField(AuthorForm))
