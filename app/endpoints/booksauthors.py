@@ -55,6 +55,7 @@ class BookList(views.View):
 
         return render_template(t,
                                form=form,
+                               title='List of books',
                                user=current_user)
 
 
@@ -89,10 +90,7 @@ class AuthorList(views.View):
 
         return render_template(t,
                                form=form,
-                               user=current_user)
-
-        return render_template(t,
-                               authors=authors,
+                               title='List of authors',
                                user=current_user)
 
 
@@ -105,6 +103,7 @@ class AddEditBook(views.View):
         book_mgr = BookAbstraction()
         form = AddEditBookForm(request.form, current_user)
         form.authors.choices = [(a.id, a.name) for a in current_user.authors]
+        page_title = 'Add book'
 
         if book_id is not None and request.method == 'GET':
             book = current_user.books.filter(
@@ -113,6 +112,7 @@ class AddEditBook(views.View):
             form.process()
             form.new_book.data = book.title
             form.submit.label.text = 'Edit book'
+            page_title = 'Edit book'
 
         if request.method == 'POST':
             book = {
@@ -126,6 +126,7 @@ class AddEditBook(views.View):
 
         return render_template(t,
                                form=form,
+                               title=page_title,
                                user=current_user)
 
 
@@ -136,20 +137,18 @@ class AddEditAuthor(views.View):
     def dispatch_request(self, author_id=None, t="addauthor.html"):
         author_mgr = AuthorAbstraction()
         form = AddEditAuthorForm(request.form, current_user)
-        # form.books.choices = [(b.id, b.title) for b in current_user.books]
+        page_title = 'Add author'
 
         if author_id is not None and request.method == 'GET':
             author = current_user.authors.filter(
                 author_mgr.model.id == author_id).one()
-            # form.books.default = [b.id for b in author.books]
-            # form.process()
             form.new_author.data = author.name
             form.submit.label.text = 'Edit author'
+            page_title = 'Edit author'
 
         if request.method == 'POST':
             author = {
                 'name': form.new_author.data,
-                # 'books': form.books.data,
                 'id': author_id,
             }
             author_mgr.add_edit_author(current_user, author)
@@ -158,4 +157,5 @@ class AddEditAuthor(views.View):
 
         return render_template(t,
                                form=form,
+                               title=page_title,
                                user=current_user)
