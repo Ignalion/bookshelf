@@ -10,11 +10,15 @@
                     {{book_form.csrf_token}}
                     {{book_form.book_id}}
                     {{book_form.title (readonly=true)}}
-                    {% for author in book_form.authors %}
-                        | {{author.data.name}}
-                    {% endfor %}
                     {{book_form.edit}}
                     {{book_form.delete}}
+                    {% if book_form.authors %}
+                        <div>Written by:
+                            {% for author in book_form.authors %}
+                                    {{author.data.name}}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </p>
             {% endfor %}
         </div>
