@@ -55,7 +55,7 @@ class BookList(views.View):
 
         return render_template(t,
                                form=form,
-                               title='List of books',
+                               page_title='List of books',
                                user=current_user)
 
 
@@ -90,7 +90,7 @@ class AuthorList(views.View):
 
         return render_template(t,
                                form=form,
-                               title='List of authors',
+                               page_title='List of authors',
                                user=current_user)
 
 
@@ -126,7 +126,7 @@ class AddEditBook(views.View):
 
         return render_template(t,
                                form=form,
-                               title=page_title,
+                               page_title=page_title,
                                user=current_user)
 
 
@@ -157,5 +157,5 @@ class AddEditAuthor(views.View):
 
         return render_template(t,
                                form=form,
-                               title=page_title,
+                               page_title=page_title,
                                user=current_user)

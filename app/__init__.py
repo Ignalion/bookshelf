@@ -3,10 +3,12 @@ Flask app starts from here
 """
 
 from flask import Flask
+from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 
 login_manager = LoginManager()
 app = Flask(__name__)
+Bootstrap(app)
 
 from config.base import BaseConfig
 app.config.from_object(BaseConfig)

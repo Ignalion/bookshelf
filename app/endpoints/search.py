@@ -36,5 +36,5 @@ class SearchView(views.View):
         return render_template(t,
                                form=form,
                                result=set(result),
-                               title='Search',
+                               page_title='Search',
                                user=current_user)

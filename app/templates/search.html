@@ -1,23 +1,22 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
     
-    <h4>Search for book by title or author name</h4>
+	<h4>Search for book by title or author name</h4>
 
-    <form method="POST" action="">
-        <div>
-            {{form.csrf_token}}
-            <p>{{form.search}}</p>
-            {{form.submit}}
-        <div>
-    </form>
-    {% for book in result %}
-        <p>
-            {{book.title}}
-            {% for author in book.authors %}
-                | {{author.name}}
-            {% endfor %}
-        </p>
-    {% endfor %}
+	<form class="form" method="POST" role="form">
+		{{form.csrf_token}}
+		{{ wtf.form_field(form.search) }}
+		{{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
+	</form>
+	{% for book in result %}
+		<p>
+			{{book.title}}
+			{% for author in book.authors %}
+					| {{author.name}}
+			{% endfor %}
+		</p>
+	{% endfor %}
 
 {% endblock %}
