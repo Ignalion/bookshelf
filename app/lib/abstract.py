@@ -1,3 +1,15 @@
+"""
+This module contains classe for all DB operaions in the app.
+They are as below:
+    BaseAbstraction
+    UserAbstraction
+    BookAbstraction
+    AuthorAbstraction
+
+The BaseAbstraction class contains all the low-level operations with ORM.
+Other classes provide interfaces for corresponding model
+"""
+
 import itertools
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -9,8 +21,36 @@ from app.lib import errors
 from app import models
 
 
-class BaseDBAbstraction(object):
-    """ Base class for other abstractions """
+def safe_execute(method):
+    def wrapper(self, *args, **kwargs):
+        if not isinstance(self, BaseAbstraction):
+            raise TypeError(
+                '@safe_execute should be applied inside BaseAbstraction '
+                'subclasses only'
+            )
+        on_success = kwargs.pop('on_success', self.save)
+        on_failure = kwargs.pop('on_failure', self.revert)
+
+        try:
+            if method:
+                res = method(self, *args, **kwargs)
+                on_success()
+                return res
+            on_success()
+        except exc.IntegrityError, err:
+            on_failure()
+            message = err.message
+
+            raise errors.DBRecordExists(message)
+
+    return wrapper
+
+
+class BaseAbstraction(object):
+    """
+    Base class for other abstractions. All low-level operations like
+    creating, updating or deleting objects to/from DB should be defined here
+    """
 
     model = None
 
@@ -23,10 +63,8 @@ class BaseDBAbstraction(object):
             self.session = self._create_session()
             self.created_session = True
 
+    @safe_execute
     def create(self, *args, **kwargs):
-        return self.safe_execute(self._create, *args, **kwargs)
-
-    def _create(self, *args, **kwargs):
         new_entry = self.model()
 
         for key in kwargs.iterkeys():
@@ -34,24 +72,19 @@ class BaseDBAbstraction(object):
 
         self.session.add(new_entry)
 
+    @safe_execute
     def delete(self, *args, **kwargs):
-        return self.safe_execute(self._delete, *args, **kwargs)
-
-    def _delete(self, *args, **kwargs):
         entry_obj = self.model().query.get(kwargs.get('id'))
         if entry_obj:
             self.session.delete(entry_obj)
 
+    @safe_execute
     def update(self, entry_obj, **kwargs):
-        return self.safe_execute(self._update, entry=entry_obj, **kwargs)
-
-    def _update(self, entry, **kwargs):
         for key in kwargs.iterkeys():
-            if hasattr(entry, key):
-                setattr(entry, key, kwargs[key])
+            if hasattr(entry_obj, key):
+                setattr(entry_obj, key, kwargs[key])
 
-        self.session.add(entry)
-        return entry
+        self.session.add(entry_obj)
 
     def _create_session(self):
         return db_session
@@ -62,25 +95,8 @@ class BaseDBAbstraction(object):
     def revert(self):
         self.session.rollback()
 
-    def safe_execute(self, method=None, *args, **kwargs):
-        on_success = kwargs.pop('on_success', self.save)
-        on_failure = kwargs.pop('on_failure', self.revert)
 
-        try:
-            if method:
-                res = method(*args, **kwargs)
-                on_success()
-                return res
-            on_success()
-
-        except exc.IntegrityError, err:
-            on_failure()
-            message = err.message
-
-            raise errors.DBRecordExists(message)
-
-
-class UserAbstraction(BaseDBAbstraction):
+class UserAbstraction(BaseAbstraction):
     """ Abstraction for User model """
 
     model = models.User
@@ -118,7 +134,7 @@ class UserAbstraction(BaseDBAbstraction):
         return user
 
 
-class BookAbstraction(BaseDBAbstraction):
+class BookAbstraction(BaseAbstraction):
     """ Abstraction for Book model """
 
     model = models.Book
@@ -144,7 +160,7 @@ class BookAbstraction(BaseDBAbstraction):
         return books
 
 
-class AuthorAbstraction(BaseDBAbstraction):
+class AuthorAbstraction(BaseAbstraction):
     """ Abstraction for Author model """
 
     model = models.Author
