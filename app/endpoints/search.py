@@ -1,3 +1,6 @@
+"""
+This module provides all the tools for the books searching
+"""
 from flask import (
     render_template,
     request,
@@ -12,6 +15,7 @@ from app.forms import SearchForm
 
 
 class SearchView(views.View):
+    """ Provides search for the books by author name or book title """
 
     methods = ('GET', 'POST')
 
@@ -32,4 +36,5 @@ class SearchView(views.View):
         return render_template(t,
                                form=form,
                                result=set(result),
+                               title='Search',
                                user=current_user)

@@ -1,3 +1,11 @@
+"""
+Here are defined all book related views as below:
+    BookList
+    AuthorList
+    AddEditBook
+    AddEditAuthor
+"""
+
 from flask import (
     render_template,
     request,
@@ -9,22 +17,16 @@ from flask import (
 from flask_login import login_required, current_user
 
 from app.lib.abstract import BookAbstraction, AuthorAbstraction
-from app.forms import AddBookForm, AddAuthorForm, BookListForm, AuthorListForm
+from app.forms import (
+    AddEditBookForm,
+    AddEditAuthorForm,
+    BookListForm,
+    AuthorListForm
+)
 
-
-# class BookList(views.View):
-#
-#     @login_required
-#     def dispatch_request(self, t="old_booklist.html"):
-#         book_mgr = BookAbstraction()
-#         books = book_mgr.get_book_list(current_user)
-#
-#         return render_template(t,
-#                                books=books,
-#                                user=current_user)
-#
 
 class BookList(views.View):
+    """ Lists all the book for current logged in user """
 
     methods = ('GET', 'POST')
 
@@ -53,10 +55,12 @@ class BookList(views.View):
 
         return render_template(t,
                                form=form,
+                               title='List of books',
                                user=current_user)
 
 
 class AuthorList(views.View):
+    """ Lists all the authors for current logged in user """
 
     methods = ('GET', 'POST')
 
@@ -86,22 +90,20 @@ class AuthorList(views.View):
 
         return render_template(t,
                                form=form,
-                               user=current_user)
-
-        return render_template(t,
-                               authors=authors,
+                               title='List of authors',
                                user=current_user)
 
 
-class AddBook(views.View):
+class AddEditBook(views.View):
 
     methods = ('GET', 'POST')
 
     @login_required
     def dispatch_request(self, book_id=None, t="addbook.html"):
         book_mgr = BookAbstraction()
-        form = AddBookForm(request.form, current_user)
+        form = AddEditBookForm(request.form, current_user)
         form.authors.choices = [(a.id, a.name) for a in current_user.authors]
+        page_title = 'Add book'
 
         if book_id is not None and request.method == 'GET':
             book = current_user.books.filter(
@@ -110,6 +112,7 @@ class AddBook(views.View):
             form.process()
             form.new_book.data = book.title
             form.submit.label.text = 'Edit book'
+            page_title = 'Edit book'
 
         if request.method == 'POST':
             book = {
@@ -123,30 +126,29 @@ class AddBook(views.View):
 
         return render_template(t,
                                form=form,
+                               title=page_title,
                                user=current_user)
 
 
-class AddAuthor(views.View):
+class AddEditAuthor(views.View):
     methods = ('GET', 'POST')
 
     @login_required
     def dispatch_request(self, author_id=None, t="addauthor.html"):
         author_mgr = AuthorAbstraction()
-        form = AddAuthorForm(request.form, current_user)
-        form.books.choices = [(b.id, b.title) for b in current_user.books]
+        form = AddEditAuthorForm(request.form, current_user)
+        page_title = 'Add author'
 
         if author_id is not None and request.method == 'GET':
             author = current_user.authors.filter(
                 author_mgr.model.id == author_id).one()
-            form.books.default = [b.id for b in author.books]
-            form.process()
             form.new_author.data = author.name
             form.submit.label.text = 'Edit author'
+            page_title = 'Edit author'
 
         if request.method == 'POST':
             author = {
                 'name': form.new_author.data,
-                'books': form.books.data,
                 'id': author_id,
             }
             author_mgr.add_edit_author(current_user, author)
@@ -155,4 +157,5 @@ class AddAuthor(views.View):
 
         return render_template(t,
                                form=form,
+                               title=page_title,
                                user=current_user)

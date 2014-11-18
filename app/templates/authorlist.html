@@ -10,9 +10,6 @@
                     {{author_form.csrf_token}}
                     {{author_form.author_id}}
                     {{author_form['name'] (readonly=true)}}
-                    {% for book in author_form.books %}
-                        | {{book.data.title}}
-                    {% endfor %}
                     {{author_form.edit}}
                     {{author_form.delete}}
                 </p>
