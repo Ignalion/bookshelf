@@ -1,3 +1,5 @@
+import itertools
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import exc
@@ -136,6 +138,11 @@ class BookAbstraction(BaseDBAbstraction):
         else:
             self.create(user=user_obj, **book)
 
+    def book_search(self, title):
+        books = self.session.query(self.model).filter(
+            self.model.title.like('%%%s%%' % title)).all()
+        return books
+
 
 class AuthorAbstraction(BaseDBAbstraction):
     """ Abstraction for Author model """
@@ -152,3 +159,9 @@ class AuthorAbstraction(BaseDBAbstraction):
         author['books'] = book_mgr.get_book_list(user_obj).filter(
             book_mgr.model.id.in_([int(id) for id in author['books']])).all()
         self.create(user=user_obj, **author)
+
+    def author_search(self, name):
+        authors = self.session.query(self.model).filter(
+            self.model.name.like('%%%s%%' % name)).all()
+        books = [author.books for author in authors]
+        return list(itertools.chain(*books))
