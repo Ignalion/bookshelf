@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>Your authors list:</h3>
+
+    <form method="POST" action="">
+        <div>
+            {{form.csrf_token}}
+            {% for author_form in form.authors %}
+                <p>
+                    {{author_form.csrf_token}}
+                    {{author_form.author_id}}
+                    {{author_form['name'] (readonly=true)}}
+                    {{author_form.edit}}
+                    {{author_form.delete}}
+                </p>
+            {% endfor %}
+        </div>
+    </form>
+    <div><a href="{{ url_for('addauthor') }}">Add Author</a></div>
+{% endblock %}

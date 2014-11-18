@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if form_errors %}
+    {% for field in form_errors.keys() %}
+        {% for error in form_errors[field] %}
+            <div><h4>{{error}}</h4></div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+
+<form method="POST" action="">
+    <div>
+        {{form.csrf_token}}
+        {{form.new_author (placeholder="Author name")}}
+        {{form.books}}
+        {{form.submit}}
+    </div>
+</form>
+{% endblock %}

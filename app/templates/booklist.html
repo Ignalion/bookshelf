@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>Your books list:</h3>
+
+    <form method="POST" action="{{url_for('booklist')}}">
+        <div>
+            {{form.csrf_token}}
+            {% for book_form in form.books %}
+                <p>
+                    {{book_form.csrf_token}}
+                    {{book_form.book_id}}
+                    {{book_form.title (readonly=true)}}
+                    {{book_form.edit}}
+                    {{book_form.delete}}
+                    {% if book_form.authors %}
+                        <div>Written by:
+                            {% for author in book_form.authors %}
+                                    {{author.data.name}}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </p>
+            {% endfor %}
+        </div>
+    </form>
+    <div><a href="{{ url_for('addbook') }}">Add Book</a></div>
+{% endblock %}
