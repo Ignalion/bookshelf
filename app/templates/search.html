@@ -8,23 +8,28 @@
 	<h4>Search for book by title or author name</h4>
 	<form class="form" method="POST" role="form">
 		{{form.csrf_token}}
+		{{ wtf.form_errors(form, hiddens="only") }}
 		{{ wtf.form_field(form.search) }}
 		{{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
 	</form>
 </div>
 
 <div class="body b-content_container">
-{% for book in result %}
-	<p>
-		<p><label>{{book.title}}</label><p>
-		{% if book.authors %}
-			<label>Written by:
-				{{ book.authors | map(attribute='name') | join(', ') }}
-			</label>
-		{% endif %}
-		<hr />
-	</p>
-{% endfor %}
+{% if result is string %}
+	<label>{{ result }}</label>
+{% else %}
+	{% for book in result %}
+		<p>
+			<p><label>{{book.title}}</label><p>
+			{% if book.authors %}
+				<label>Written by:
+					{{ book.authors | map(attribute='name') | join(', ') }}
+				</label>
+			{% endif %}
+			<hr />
+		</p>
+	{% endfor %}
+{% endif %}
 </div>
 
 {% endblock %}
