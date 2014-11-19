@@ -21,4 +21,4 @@ class BaseConfig(object):
     USERDATA_DIRECTORY_NAME = "user_data"
     USERDATA_DIRECTORY = os.path.join(app.static_folder,
                                       USERDATA_DIRECTORY_NAME)
-    VERSION = '1.1.0'
+    VERSION = '1.1.1'
