@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 {% block content %}
-	<h3>Your books list:</h3>
+<h3>Your books list:</h3>
 
+<div class="container b-content_container">
 	<form class="form" method="POST" role="form">
 		{{ form.csrf_token }}
 		{{ wtf.form_errors(form, hiddens="only") }}
@@ -10,17 +11,16 @@
 			{{ book_form.csrf_token }}
 			{{ book_form.book_id }}
 			{{ wtf.form_field(book_form.title, readonly=true) }}
+			{% if book_form.authors %}
+			<p><label>Written by:
+				<em>{{ book_form.authors | map(attribute='data') | join(', ', attribute='name') }}</em>
+			</label></p>
+			{% endif %}
 			{{ wtf.form_field(book_form.edit) }}
 			{{ wtf.form_field(book_form.delete) }}
-			{% if book_form.authors %}
-				<div>Written by:
-					{% for author in book_form.authors %}
-						{{author.data.name}}
-					{% endfor %}
-				</div>
-			{% endif %}
+			<hr />
 		{% endfor %}
 	</form>
-
-	<div><a href="{{ url_for('addbook') }}" class='btn btn-primary b-content_btn'>Add Book</a></div>
+</div>
+<a href="{{ url_for('addbook') }}" class='btn btn-primary'>Add Book</a>
 {% endblock %}

@@ -3,10 +3,12 @@
 
 {% block content %}
 
-<form class="form" method="POST" role="form">
-	{{form.csrf_token}}
-	{{ wtf.form_field(form.new_book, placeholder="Book title")}}
-	{{ wtf.form_field(form.authors) }}
-	{{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
-</form>
+<div class="container b-content_container">
+	<form class="form" method="POST" role="form">
+		{{form.csrf_token}}
+		{{ wtf.form_field(form.new_book, placeholder="Book title")}}
+		{{ wtf.form_field(form.authors) }}
+		{{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
+	</form>
+</div>
 {% endblock %}
