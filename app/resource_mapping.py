@@ -8,6 +8,8 @@ from app import endpoints
 
 ENDPOINTS = (
     ('/', endpoints.index.IndexView.as_view('index')),
+    ('/about', endpoints.about.AboutView.as_view('about')),
+    ('/contacts', endpoints.contacts.ContactsView.as_view('contacts')),
     ('/login', endpoints.login.LoginView.as_view('login')),
     ('/register', endpoints.register.RegisterView.as_view('register')),
     ('/logout', endpoints.login.logout),

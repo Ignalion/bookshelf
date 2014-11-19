@@ -1,21 +1,14 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
 
-{% if form_errors %}
-    {% for field in form_errors.keys() %}
-        {% for error in form_errors[field] %}
-            <div><h4>{{error}}</h4></div>
-        {% endfor %}
-    {% endfor %}
-{% endif %}
-
-<form method="POST" action="">
-    <div>
-        {{form.csrf_token}}
-        {{form.new_book (placeholder="Book title")}}
-        {{form.authors}}
-        {{form.submit}}
-    </div>
-</form>
+<div class="container b-content_container">
+	<form class="form" method="POST" role="form">
+		{{form.csrf_token}}
+		{{ wtf.form_field(form.new_book, placeholder="Book title")}}
+		{{ wtf.form_field(form.authors) }}
+		{{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
+	</form>
+</div>
 {% endblock %}

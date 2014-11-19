@@ -30,7 +30,7 @@ class LoginView(views.View):
         return render_template(t,
                                form=form,
                                user=current_user,
-                               title='Login',
+                               page_title='Login',
                                form_errors=form_errors)
 
 

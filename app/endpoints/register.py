@@ -38,6 +38,6 @@ class RegisterView(views.View):
 
         return render_template('register.html',
                                form=form,
-                               title='Register',
+                               page_title='Register',
                                user=current_user,
                                form_errors=form_errors)

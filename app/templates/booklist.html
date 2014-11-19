@@ -1,27 +1,26 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 {% block content %}
-    <h3>Your books list:</h3>
+<h3>Your books list:</h3>
 
-    <form method="POST" action="{{url_for('booklist')}}">
-        <div>
-            {{form.csrf_token}}
-            {% for book_form in form.books %}
-                <p>
-                    {{book_form.csrf_token}}
-                    {{book_form.book_id}}
-                    {{book_form.title (readonly=true)}}
-                    {{book_form.edit}}
-                    {{book_form.delete}}
-                    {% if book_form.authors %}
-                        <div>Written by:
-                            {% for author in book_form.authors %}
-                                    {{author.data.name}}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </p>
-            {% endfor %}
-        </div>
-    </form>
-    <div><a href="{{ url_for('addbook') }}">Add Book</a></div>
+<div class="container b-content_container">
+	<form class="form" method="POST" role="form">
+		{{ form.csrf_token }}
+		{{ wtf.form_errors(form, hiddens="only") }}
+		{% for book_form in form.books %}
+			{{ book_form.csrf_token }}
+			{{ book_form.book_id }}
+			{{ wtf.form_field(book_form.title, readonly=true) }}
+			{% if book_form.authors %}
+			<p><label>Written by:
+				<em>{{ book_form.authors | map(attribute='data') | join(', ', attribute='name') }}</em>
+			</label></p>
+			{% endif %}
+			{{ wtf.form_field(book_form.edit) }}
+			{{ wtf.form_field(book_form.delete) }}
+			<hr />
+		{% endfor %}
+	</form>
+</div>
+<a href="{{ url_for('addbook') }}" class='btn btn-primary'>Add Book</a>
 {% endblock %}

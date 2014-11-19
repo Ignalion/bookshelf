@@ -1,4 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Welcome to bookshelf app</h1>
+	<div class="b-content_container">
+		<div class='b-content'>
+			<h1>
+				Welcome to bookshelf app.<br />Have a nice time here.
+			</h1>
+		</div>
+		{% if user.is_authenticated() %}
+			<a href="{{ url_for('logout') }}" class='btn btn-primary b-content_btn'>Logout</a>
+		{% else %}
+			<a href="{{ url_for('register') }}" class='btn btn-primary b-content_btn'>Register</a>
+			<a href="{{ url_for('login') }}" class='btn btn-primary b-content_btn'>Login</a>
+		{% endif %}
+	</div>
 {% endblock %}

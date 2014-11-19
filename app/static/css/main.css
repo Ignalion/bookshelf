@@ -1,0 +1,41 @@
+.b-content_container
+{
+	float: left;
+	margin-left: 25px;
+	max-width: 420px;
+}
+.b-content
+{
+	border-style: inset;
+	text-align: center;
+}
+
+.b-content_btn
+{
+	margin-left: 5px;
+	float: right;
+}
+
+.b-menu
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	width: 100%;
+	display: table;
+	table-layout: fixed;
+}
+
+.b-link_menu
+{
+	text-align: center;
+	color: #bbb;
+	cursor: pointer;
+	font-size: 14px;
+	height: 38px;
+	background-color: #888;
+	line-height: 38px;
+	border: 1px solid #e7e7e7;
+	display: table-cell;
+	text-decoration: none;
+}
