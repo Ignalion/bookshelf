@@ -34,10 +34,8 @@ class RegisterView(views.View):
                 user_mgr.create(**form.data)
                 return redirect(url_for('index'))
 
-        form_errors = form.errors
-
         return render_template('register.html',
                                form=form,
                                page_title='Register',
                                user=current_user,
-                               form_errors=form_errors)
+                               )

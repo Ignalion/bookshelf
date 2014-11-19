@@ -5,7 +5,6 @@
 <div class="container b-content_container">
 	<form class="form" method="POST" role="form">
 		{{ form.csrf_token }}
-		{{ wtf.form_errors(form, hiddens="only") }}
 		{{ wtf.form_field(form.username, placeholder="Username") }}
 		{{ wtf.form_field(form.email, placeholder="E-mail") }}
 		{{ wtf.form_field(form.password, placeholder="Password") }}
