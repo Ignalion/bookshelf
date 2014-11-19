@@ -16,7 +16,6 @@ class LoginView(views.View):
 
     def dispatch_request(self, t='login.html'):
         form = LoginForm()
-        form_errors = None
 
         if current_user.is_authenticated():
             return redirect(url_for('index'))
@@ -26,12 +25,11 @@ class LoginView(views.View):
                 login_user(form.user_obj,
                            remember=form.remember.data)
                 return redirect(url_for('index'))
-            form_errors = form.errors
         return render_template(t,
                                form=form,
                                user=current_user,
-                               title='Login',
-                               form_errors=form_errors)
+                               page_title='Login',
+                               )
 
 
 @login_manager.user_loader

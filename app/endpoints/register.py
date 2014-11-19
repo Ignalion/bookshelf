@@ -5,7 +5,6 @@ from flask import (
     render_template,
     request,
     redirect,
-    session,
     url_for,
     views
 )
@@ -25,9 +24,7 @@ class RegisterView(views.View):
         if current_user.is_authenticated():
             return redirect(url_for('index'))
 
-        user_data = session.get('form_data', {})
-
-        form = RegisterForm(request.form, **user_data)
+        form = RegisterForm()
 
         if request.method == 'POST':
             if form.validate_on_submit():
@@ -37,10 +34,8 @@ class RegisterView(views.View):
                 user_mgr.create(**form.data)
                 return redirect(url_for('index'))
 
-        form_errors = form.errors
-
         return render_template('register.html',
                                form=form,
-                               title='Register',
+                               page_title='Register',
                                user=current_user,
-                               form_errors=form_errors)
+                               )

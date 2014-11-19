@@ -1,21 +1,14 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
-
-{% if form_errors %}
-    {% for field in form_errors.keys() %}
-        {% for error in form_errors[field] %}
-            <div><h4>{{error}}</h4></div>
-        {% endfor %}
-    {% endfor %}
-{% endif %}
-
-<form method="POST" action="{{url_for('login')}}">
-    <div>
-        {{form.csrf_token}}
-        {{form.user_ident (placeholder="E-mail/Username")}}
-        {{form.password (placeholder="Password")}}
-        {{form.submit}}
-    </div>
-</form>
+<div class="container b-content_container">
+	<form class="form" method="POST" role="form">
+		{{ form.csrf_token }}
+		{{ wtf.form_field(form.user_ident, placeholder="E-mail/username") }}
+		{{ wtf.form_field(form.password, placeholder="Password") }}
+		{{ wtf.form_field(form.remember) }}
+		{{ wtf.form_field(form.submit, button_map={'submit': 'primary'}) }}
+	</form>
+</div>
 {% endblock %}

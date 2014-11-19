@@ -1,12 +1,11 @@
 """
 This is index view. Start of the trip. Beginning of everything here.
 """
-from flask import render_template
-from flask.views import View
+from flask import render_template, views
 from flask_login import current_user
 
 
-class IndexView(View):
+class IndexView(views.View):
     """
     Index view.
     That is shown to any user that come to the app first time
@@ -15,6 +14,5 @@ class IndexView(View):
     methods = ('GET',)
 
     def dispatch_request(self, t="index.html"):
-        user = current_user
         return render_template(t,
-                               user=user)
+                               user=current_user)

@@ -16,6 +16,7 @@ import string
 from flask_wtf import Form
 from wtforms import (
     TextField,
+    TextAreaField,
     PasswordField,
     BooleanField,
     FieldList,
@@ -49,7 +50,7 @@ class LoginForm(Form):
         self.try_validate = False
 
     user_ident = TextField(
-        'userident', validators=[
+        'E-mail/username', validators=[
             Required(REQUIRED_FIELD % 'E-mail/username'),
             Length(max=48, message=LENGTH_FIELD % ('E-mail/username', 48))]
     )
@@ -149,7 +150,7 @@ class AddEditBookForm(Form):
         validators=[Required(REQUIRED_FIELD % 'Title'),
                     Length(max=50, message=LENGTH_FIELD % ('Title', 50))]
     )
-    authors = SelectMultipleField('authors')
+    authors = SelectMultipleField('Authors')
     submit = SubmitField('Add book')
 
 
@@ -178,7 +179,7 @@ class BookForm(Form):
         - delete: SubmitField
     """
     book_id = HiddenField('book_id')
-    title = TextField('title')
+    title = TextAreaField('Title')
     authors = FieldList(TextField('name'))
     edit = SubmitField('edit')
     delete = SubmitField('delete')
@@ -203,7 +204,7 @@ class AuthorForm(Form):
     """
 
     author_id = HiddenField('author_id')
-    name = TextField('name')
+    name = TextAreaField('Name')
     edit = SubmitField('edit')
     delete = SubmitField('delete')
 

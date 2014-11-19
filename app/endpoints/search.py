@@ -27,14 +27,19 @@ class SearchView(views.View):
         form = SearchForm()
 
         if request.method == 'POST':
-            if len(form.search.data) < 2:
-                return redirect(url_for('search'))
+            if form.validate_on_submit():
+                if len(form.search.data) < 2:
+                    return redirect(url_for('search'))
 
-            result = book_mgr.book_search(form.search.data)
-            result.extend(author_mgr.author_search(form.search.data))
+                result = book_mgr.book_search(form.search.data)
+                result.extend(author_mgr.author_search(form.search.data))
+                if not result:
+                    result = "No books found"
+                else:
+                    result = set(result)
 
         return render_template(t,
                                form=form,
-                               result=set(result),
-                               title='Search',
+                               result=result,
+                               page_title='Search',
                                user=current_user)

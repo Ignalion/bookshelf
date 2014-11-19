@@ -1,29 +1,39 @@
-<html>
-    <head>
-        {% if title %}
-        <title>{{ title }} - Bookshelf application</title>
-        {% else %}
-        <title>Bookshelf application</title>
-        {% endif %}
-    </head>
-    <body>
-        <div>Main page:
-            <a href="{{ url_for('index') }}">Home</a>
-            | <a href="{{ url_for('search') }}">Search</a>
-            {% if user.is_authenticated() %}
-            | <a href="{{ url_for('booklist') }}">BookList</a>
-            | <a href="{{ url_for('authorlist') }}">AuthorList</a>
-            || <a href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-            | <a href="{{ url_for('login') }}">Login</a>
-            | <a href="{{ url_for('register') }}">Register</a>
-            {% endif %}
-        </div>
-        <hr>
-        {% block content %}{% endblock %}
-        <footer>
-            <hr />
-            <p>Distributed by GNU GPL 2.0. Author: Constantine Panfilov</p>
-        </footer>
-    </body>
-    </html>
+{% extends "bootstrap/base.html" %}
+	{% block title %}
+		{% if page_title %}
+			{{ page_title }} - Bookshelf application
+		{% else %}
+			Unnamed page
+		{% endif %}
+	{% endblock %}
+
+{% block styles %}
+{{super()}}
+	<link rel="stylesheet" href="{{url_for('.static', filename='css/main.css')}}">
+{% endblock %}
+
+{% block head %}
+{{super()}}
+	<div class="b-menu">
+		<a href="{{ url_for('index') }}" class='b-link_menu'>Home</a>
+		<a href="{{ url_for('about') }}" class='b-link_menu'>About</a>
+		<a href="{{ url_for('contacts') }}" class='b-link_menu'>Contacts</a>
+		<a href="{{ url_for('search') }}" class='b-link_menu'>Search</a>
+		{% if user.is_authenticated() %}
+			<a href="{{ url_for('booklist') }}" class='b-link_menu'>BookList</a>
+			<a href="{{ url_for('authorlist') }}" class='b-link_menu'>AuthorList</a>
+			<a href="{{ url_for('logout') }}" class='b-link_menu'>Logout</a>
+		{% else %}
+			<a href="{{ url_for('login') }}" class='b-link_menu'>Login</a>
+			<a href="{{ url_for('register') }}" class='b-link_menu'>Register</a>
+		{% endif %}
+	</div>
+	<hr>
+{% endblock %}
+
+{% block content %}{% endblock %}
+
+<footer>
+	<hr />
+	<p>Distributed by GNU GPL 2.0. Author: Constantine Panfilov</p>
+</footer>
