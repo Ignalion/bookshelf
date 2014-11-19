@@ -102,27 +102,35 @@ class AddEditBook(views.View):
     def dispatch_request(self, book_id=None, t="addbook.html"):
         book_mgr = BookAbstraction()
         form = AddEditBookForm(request.form, current_user)
-        form.authors.choices = [(a.id, a.name) for a in current_user.authors]
+        form.authors.choices = [
+            (str(a.id), a.name) for a in current_user.authors
+        ]
         page_title = 'Add book'
 
         if book_id is not None and request.method == 'GET':
             book = current_user.books.filter(
                 book_mgr.model.id == book_id).one()
-            form.authors.default = [a.id for a in book.authors]
+            form.authors.default = [str(a.id) for a in book.authors]
             form.process()
             form.new_book.data = book.title
             form.submit.label.text = 'Edit book'
             page_title = 'Edit book'
 
         if request.method == 'POST':
-            book = {
-                'title': form.new_book.data,
-                'authors': form.authors.data,
-                'id': book_id
-            }
-            book_mgr.add_edit_book(current_user, book)
+            if book_id is not None:
+                # In case if validation fails we need to change title and label
+                # again because Flask would re-render the whole form
+                form.submit.label.text = 'Edit book'
+                page_title = 'Edit book'
+            if form.validate_on_submit():
+                book = {
+                    'title': form.new_book.data,
+                    'authors': form.authors.data,
+                    'id': book_id
+                }
+                book_mgr.add_edit_book(current_user, book)
 
-            return redirect(url_for('booklist'))
+                return redirect(url_for('booklist'))
 
         return render_template(t,
                                form=form,
@@ -147,13 +155,19 @@ class AddEditAuthor(views.View):
             page_title = 'Edit author'
 
         if request.method == 'POST':
-            author = {
-                'name': form.new_author.data,
-                'id': author_id,
-            }
-            author_mgr.add_edit_author(current_user, author)
+            if author_id is not None:
+                # In case if validation fails we need to change title and label
+                # again because Flask would re-render the whole form
+                form.submit.label.text = 'Edit author'
+                page_title = 'Edit author'
+            if form.validate_on_submit():
+                author = {
+                    'name': form.new_author.data,
+                    'id': author_id,
+                }
+                author_mgr.add_edit_author(current_user, author)
 
-            return redirect(url_for('authorlist'))
+                return redirect(url_for('authorlist'))
 
         return render_template(t,
                                form=form,
