@@ -14,5 +14,7 @@ class IndexView(views.View):
     methods = ('GET',)
 
     def dispatch_request(self, t="index.html"):
+        page_title = "Home"
         return render_template(t,
+                               page_title=page_title,
                                user=current_user)

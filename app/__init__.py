@@ -13,6 +13,9 @@ Bootstrap(app)
 from config.base import BaseConfig
 app.config.from_object(BaseConfig)
 
+# FIXME Turning on debug for debugging heroku
+app.debug = True
+
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 

@@ -13,5 +13,7 @@ class ContactsView(views.View):
     """
 
     def dispatch_request(self, t="contacts.html"):
+        page_title = 'Contacts'
         return render_template(t,
+                               page_title=page_title,
                                user=current_user)
