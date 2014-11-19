@@ -12,5 +12,7 @@ class AboutView(views.View):
     """
 
     def dispatch_request(self, t="about.html"):
+        page_title = 'About'
         return render_template(t,
+                               page_title=page_title,
                                user=current_user)
