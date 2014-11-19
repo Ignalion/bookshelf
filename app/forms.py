@@ -16,6 +16,7 @@ import string
 from flask_wtf import Form
 from wtforms import (
     TextField,
+    TextAreaField,
     PasswordField,
     BooleanField,
     FieldList,
@@ -178,7 +179,7 @@ class BookForm(Form):
         - delete: SubmitField
     """
     book_id = HiddenField('book_id')
-    title = TextField('Title')
+    title = TextAreaField('Title')
     authors = FieldList(TextField('name'))
     edit = SubmitField('edit')
     delete = SubmitField('delete')
@@ -203,7 +204,7 @@ class AuthorForm(Form):
     """
 
     author_id = HiddenField('author_id')
-    name = TextField('Name')
+    name = TextAreaField('Name')
     edit = SubmitField('edit')
     delete = SubmitField('delete')
 
