@@ -29,11 +29,11 @@
 .b-link_menu
 {
 	text-align: center;
-	color: #bbb;
+	color: #fff;
 	cursor: pointer;
 	font-size: 14px;
 	height: 38px;
-	background-color: #888;
+	background-color: #357ebd;
 	line-height: 38px;
 	border: 1px solid #e7e7e7;
 	display: table-cell;
