@@ -71,6 +71,7 @@ class BaseAbstraction(object):
             setattr(new_entry, key, kwargs[key])
 
         self.session.add(new_entry)
+        return new_entry
 
     @safe_execute
     def delete(self, *args, **kwargs):

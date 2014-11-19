@@ -153,6 +153,11 @@ class AddEditBookForm(Form):
     authors = SelectMultipleField('Authors')
     submit = SubmitField('Add book')
 
+    def validate_authors(form, *args, **kwargs):
+        """ Validate authors list. It shouldn't be empty """
+        if not form.authors.data:
+            raise ValidationError('You should select at least one author')
+
 
 class AddEditAuthorForm(Form):
     """
