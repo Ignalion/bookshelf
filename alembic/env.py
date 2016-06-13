@@ -51,7 +51,7 @@ def run_migrations_online():
 
     """
     alembic_config = config.get_section(config.config_ini_section)
-    from app import app
+    from app.main import app
 
     alembic_config['sqlalchemy.url'] = app.config['SQLALCHEMY_DATABASE_URI']
 

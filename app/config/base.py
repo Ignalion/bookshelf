@@ -14,4 +14,4 @@ class BaseConfig(object):
     DEBUG = False
     APP_FOLDER = os.path.split(os.path.split(BASEDIR)[0])[0]
     TEMPLATES_FOLDER = os.path.join(APP_FOLDER, 'app', 'templates')
-    VERSION = '1.2.0'
+    VERSION = '1.2.1'
