@@ -6,7 +6,7 @@
 				Welcome to bookshelf app.<br />Have a nice time here.
 			</h1>
 		</div>
-		{% if user.is_authenticated() %}
+		{% if user.is_authenticated %}
 			<a href="{{ url_for('logout') }}" class='btn btn-primary b-content_btn'>Logout</a>
 		{% else %}
 			<a href="{{ url_for('register') }}" class='btn btn-primary b-content_btn'>Register</a>

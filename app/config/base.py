@@ -1,7 +1,5 @@
 import os
 
-from app import app
-
 
 class BaseConfig(object):
     BASEDIR = os.path.abspath(os.path.join(os.path.dirname(__file__),
@@ -14,11 +12,6 @@ class BaseConfig(object):
         SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     SQLALCHEMY_MIGRATE_REPO = os.path.join(BASEDIR, 'db_repository')
     DEBUG = False
-
     APP_FOLDER = os.path.split(os.path.split(BASEDIR)[0])[0]
     TEMPLATES_FOLDER = os.path.join(APP_FOLDER, 'app', 'templates')
-
-    USERDATA_DIRECTORY_NAME = "user_data"
-    USERDATA_DIRECTORY = os.path.join(app.static_folder,
-                                      USERDATA_DIRECTORY_NAME)
-    VERSION = '1.1.1'
+    VERSION = '1.2.0'
