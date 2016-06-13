@@ -29,7 +29,7 @@ from wtforms import (
 from wtforms.validators import Required, Length, EqualTo, Email
 from wtforms.widgets import PasswordInput
 
-from app.lib.abstract import UserAbstraction
+from app.db.orm import UserAbstraction
 
 
 REQUIRED_FIELD = '%s field is required'

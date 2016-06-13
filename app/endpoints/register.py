@@ -5,7 +5,7 @@ from flask import render_template, request, redirect, url_for, views
 from flask_login import current_user
 
 from app.forms import RegisterForm
-from app.lib.abstract import UserAbstraction
+from app.db.orm import UserAbstraction
 
 
 class RegisterView(views.View):

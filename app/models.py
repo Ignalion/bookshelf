@@ -12,7 +12,7 @@ User and Author has One-To-Mane relationship with backref
 
 from sqlalchemy import Column, Integer, String, Table, ForeignKey
 from sqlalchemy.orm import relationship, backref
-from app.db import Base
+from app.db._db import Base
 
 
 class User(Base):

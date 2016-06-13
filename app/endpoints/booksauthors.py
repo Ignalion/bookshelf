@@ -16,7 +16,7 @@ from flask import (
 
 from flask_login import login_required, current_user
 
-from app.lib.abstract import BookAbstraction, AuthorAbstraction
+from app.db.orm import BookAbstraction, AuthorAbstraction
 from app.forms import (
     AddEditBookForm,
     AddEditAuthorForm,

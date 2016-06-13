@@ -3,7 +3,7 @@
 
 import random
 
-from app.lib.abstract import (
+from app.db.orm import (
     UserAbstraction,
     BookAbstraction,
     AuthorAbstraction,

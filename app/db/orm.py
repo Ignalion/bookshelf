@@ -1,103 +1,14 @@
-"""
-This module contains classe for all DB operaions in the app.
-They are as below:
-    BaseAbstraction
-    UserAbstraction
-    BookAbstraction
-    AuthorAbstraction
-
-The BaseAbstraction class contains all the low-level operations with ORM.
-Other classes provide interfaces for corresponding model
-"""
-
 import itertools
-
-from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy import exc
+from werkzeug.security import generate_password_hash, check_password_hash
 
-from app.db import db_session
-from app.lib import errors
+from base import DBObject
+from _db import db_session
 from app import models
 
+DBObject.session = db_session
 
-def safe_execute(method):
-    def wrapper(self, *args, **kwargs):
-        if not isinstance(self, BaseAbstraction):
-            raise TypeError(
-                '@safe_execute should be applied inside BaseAbstraction '
-                'subclasses only'
-            )
-        on_success = kwargs.pop('on_success', self.save)
-        on_failure = kwargs.pop('on_failure', self.revert)
-
-        try:
-            if method:
-                res = method(self, *args, **kwargs)
-                on_success()
-                return res
-            on_success()
-        except exc.IntegrityError, err:
-            on_failure()
-            message = err.message
-
-            raise errors.DBRecordExists(message)
-
-    return wrapper
-
-
-class BaseAbstraction(object):
-    """
-    Base class for other abstractions. All low-level operations like
-    creating, updating or deleting objects to/from DB should be defined here
-    """
-
-    model = None
-
-    def __init__(self, session=None):
-        self.created_session = False
-
-        if session:
-            self.session = session
-        else:
-            self.session = self._create_session()
-            self.created_session = True
-
-    @safe_execute
-    def create(self, *args, **kwargs):
-        new_entry = self.model()
-
-        for key in kwargs.iterkeys():
-            setattr(new_entry, key, kwargs[key])
-
-        self.session.add(new_entry)
-        return new_entry
-
-    @safe_execute
-    def delete(self, *args, **kwargs):
-        entry_obj = self.model().query.get(kwargs.get('id'))
-        if entry_obj:
-            self.session.delete(entry_obj)
-
-    @safe_execute
-    def update(self, entry_obj, **kwargs):
-        for key in kwargs.iterkeys():
-            if hasattr(entry_obj, key):
-                setattr(entry_obj, key, kwargs[key])
-
-        self.session.add(entry_obj)
-
-    def _create_session(self):
-        return db_session
-
-    def save(self):
-        self.session.commit()
-
-    def revert(self):
-        self.session.rollback()
-
-
-class UserAbstraction(BaseAbstraction):
+class UserAbstraction(DBObject):
     """ Abstraction for User model """
 
     model = models.User
@@ -135,7 +46,7 @@ class UserAbstraction(BaseAbstraction):
         return user
 
 
-class BookAbstraction(BaseAbstraction):
+class BookAbstraction(DBObject):
     """ Abstraction for Book model """
 
     model = models.Book
@@ -161,7 +72,7 @@ class BookAbstraction(BaseAbstraction):
         return books
 
 
-class AuthorAbstraction(BaseAbstraction):
+class AuthorAbstraction(DBObject):
     """ Abstraction for Author model """
 
     model = models.Author
