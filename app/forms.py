@@ -70,9 +70,9 @@ class LoginForm(Form):
 
         user_obj = None
         if "@" in user_ident:
-            user_obj = user_mgr.get_by_email(user_ident)
+            user_obj = user_mgr.get_user(email=user_ident)
         else:
-            user_obj = user_mgr.get_by_username(user_ident)
+            user_obj = user_mgr.get_user(username=user_ident)
 
         if user_obj and (user_mgr.check_password(user_obj, form.password.data)):
             form.user_obj = user_obj
@@ -118,21 +118,21 @@ class RegisterForm(Form):
 
     submit = SubmitField('Confirm registration')
 
-    def validate_username(form, field):
+    def validate_username(self, field):
         if field.data:
             allowed_set = set(string.ascii_letters + string.digits + '_-')
             if set(field.data) - allowed_set:
                 raise ValidationError('Username can contain only letters,'
                                       'digits, underscore and hyphen')
             user_mgr = UserAbstraction()
-            if not user_mgr.get_by_username(field.data) is None:
+            if not user_mgr.get_user(username=field.data) is None:
                 raise ValidationError('Such username already exists.')
             return True
 
-    def validate_email(form, field):
+    def validate_email(self, field):
         if field.data:
             user_mgr = UserAbstraction()
-            if not user_mgr.get_by_email(field.data) is None:
+            if not user_mgr.get_user(email=field.data) is None:
                 raise ValidationError('Such e-mail already exists.')
             return True
 

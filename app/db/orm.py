@@ -1,12 +1,16 @@
 import itertools
+
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from app.config import Config
+from app import db; db.init_db(Config.SQLALCHEMY_DATABASE_URI)
 from base import DBObject
-from _db import db_session
-from app import models
 
-DBObject.session = db_session
+from app.db import models
+
+DBObject.session = db.db_session
+
 
 class UserAbstraction(DBObject):
     """ Abstraction for User model """
@@ -20,16 +24,13 @@ class UserAbstraction(DBObject):
     def check_password(self, user_obj, raw_password):
         return check_password_hash(user_obj.password, raw_password)
 
-    def get_by_username(self, username):
-        """ Search user by its username """
-        q = self.session.query(self.model).filter(
-            self.model.username == username)
-        user = None
+    def get_user(self, **kwargs):
+        """ Search user by its username or email"""
 
         try:
-            user = q.one()
+            user = self.get_one(**kwargs)
         except NoResultFound:
-            pass
+            user = None
 
         return user
 

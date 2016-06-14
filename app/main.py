@@ -6,10 +6,9 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 
+from app.db.orm import UserAbstraction
 from config import Config
 from resource_mapping import RULES
-from app.models import User
-
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -30,7 +29,5 @@ for rule, func in RULES:
 
 @login_manager.user_loader
 def user_load(userid):
-    user = User.query.filter_by(id=userid).one()
-    return user
-
+    return UserAbstraction().get(userid)
 

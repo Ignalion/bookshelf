@@ -69,6 +69,12 @@ class DBObject(object):
 
         self.session.add(entry_obj)
 
+    def get(self, id):
+        return self.model.query.get(id)
+
+    def get_one(self, **kwargs):
+        return self.session.query(self.model).filter_by(**kwargs).one()
+
     def get_all(self, **kwargs):
         if kwargs:
             return self.session.query(self.model).filter_by(**kwargs).all()
